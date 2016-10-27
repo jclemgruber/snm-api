@@ -23,5 +23,8 @@ Route::group(['middleware' => 'cors'], function(){
         	return $request->user();
         });
 
+        Route::get('/cidades/list','CidadeController@list');
+        Route::resource('cidades','CidadeController');
+
     });
 });

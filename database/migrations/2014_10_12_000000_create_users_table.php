@@ -19,6 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
+            $table->string('cpf');
+            $table->string('login_type')->default('local');
+            $table->string('facebook_id')->nullable()->unique();
+            $table->string('facebook_avatar')->nullable();
+            $table->string('google_id')->nullable()->unique();
             $table->timestamps();
         });
     }
