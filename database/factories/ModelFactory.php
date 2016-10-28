@@ -55,3 +55,16 @@ $factory->define(App\Model\Cidade::class, function ($faker) {
         'nome' => $faker->city,
     ];
 });
+
+$factory->define(App\Model\Tema::class, function ($faker) {
+    $faker = Faker::create('pt_BR');
+    return [
+        'nome' => $faker->word,
+        'inicio_inscricoes' => $faker->date,
+        'fim_inscricoes' => $faker->date,
+        'inicio_evento' => $faker->date,
+        'fim_evento' => $faker->date,
+        'antes_inscricoes' => $faker->text,
+        'apos_inscricoes' => $faker->text
+    ];
+});

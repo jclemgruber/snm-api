@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -51,6 +52,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'cpf' => 'required|min:14|max:14|unique:users'
         ]);
     }
 
@@ -66,6 +68,16 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'cpf' => $data['cpf']
         ]);
+    }
+
+    public function registerApi(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+        return $this->create($request->all());
     }
 }

@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'cors'], function(){
 
-    Route::post('token', 'AuthenticateController@authenticate');
+    Route::post('token',    'AuthenticateController@authenticate');
+    Route::post('register', 'Auth\RegisterController@registerApi');
 
     Route::group(['middleware' => 'jwt.auth'], function(){
 
@@ -25,6 +26,8 @@ Route::group(['middleware' => 'cors'], function(){
 
         Route::get('/cidades/list','CidadeController@list');
         Route::resource('cidades','CidadeController');
+
+        Route::resource('temas','TemaController');
 
     });
 });
