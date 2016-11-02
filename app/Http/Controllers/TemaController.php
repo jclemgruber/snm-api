@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Validator;
 use App\Http\Requests;
 use App\Model\Tema;
 
@@ -33,6 +34,18 @@ class TemaController extends Controller
         //
     }
 
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'nome' => 'required',
+            'ativo' => 'required|boolean',
+            'inicio_evento' => 'required|date_format:d/m/Y',
+            'fim_evento' => 'required|date_format:d/m/Y|after:inicio_evento',
+            'inicio_inscricoes' => 'required|date_format:d/m/Y',
+            'fim_inscricoes' => 'required|date_format:d/m/Y|after:inicio_inscricoes'
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -41,7 +54,20 @@ class TemaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $this->validator($request->all());
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        return Tema::create([
+            'nome' => $request->nome,
+            'inicio_evento' => $request->inicio_evento,
+            'fim_evento' => $request->fim_evento,
+            'inicio_inscricoes' => $request->inicio_inscricoes,
+            'fim_inscricoes' => $request->fim_inscricoes,
+            'antes_inscricoes' => '',
+            'apos_inscricoes' => ''
+        ]);
     }
 
     /**
