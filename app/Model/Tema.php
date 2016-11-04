@@ -19,9 +19,19 @@ class Tema extends Model
         return Carbon::parse($this->attributes['inicio_inscricoes'])->format('d/m/Y');
     }
 
+    public function setInicioInscricoesAttribute($value)
+    {
+        $this->attributes['inicio_inscricoes'] = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z',$value);
+    }
+
     public function getFimInscricoesAttribute()
     {
         return Carbon::parse($this->attributes['fim_inscricoes'])->format('d/m/Y');
+    }
+
+    public function setFimInscricoesAttribute($value)
+    {
+        $this->attributes['fim_inscricoes'] = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z',$value);
     }
 
     public function getInicioEventoAttribute()
@@ -29,9 +39,19 @@ class Tema extends Model
         return Carbon::parse($this->attributes['inicio_evento'])->format('d/m/Y');
     }
 
+    public function setInicioEventoAttribute($value)
+    {
+        $this->attributes['inicio_evento'] = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z',$value);
+    }
+
     public function getFimEventoAttribute()
     {
         return Carbon::parse($this->attributes['fim_evento'])->format('d/m/Y');
+    }
+
+    public function setFimEventoAttribute($value)
+    {
+        $this->attributes['fim_evento'] = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z',$value);
     }
 
     public function getAtivoAttribute()

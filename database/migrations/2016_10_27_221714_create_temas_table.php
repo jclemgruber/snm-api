@@ -16,7 +16,7 @@ class CreateTemasTable extends Migration
         Schema::create('temas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->boolean('ativo');
+            $table->boolean('ativo')->default(0);
             $table->date('inicio_inscricoes');
             $table->date('fim_inscricoes');
             $table->date('inicio_evento');
