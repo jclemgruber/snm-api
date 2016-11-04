@@ -61,10 +61,10 @@ $factory->define(App\Model\Tema::class, function ($faker) {
     return [
         'nome' => $faker->sentence,
         'ativo' => false,
-        'inicio_inscricoes' => $faker->date,
-        'fim_inscricoes' => $faker->date,
-        'inicio_evento' => $faker->date,
-        'fim_evento' => $faker->date,
+        'inicio_inscricoes' => $faker->date('Y-m-d\TH:i:s.u\Z'),
+        'fim_inscricoes' => $faker->date('Y-m-d\TH:i:s.u\Z'),
+        'inicio_evento' => $faker->date('Y-m-d\TH:i:s.u\Z'),
+        'fim_evento' => $faker->date('Y-m-d\TH:i:s.u\Z'),
         'antes_inscricoes' => $faker->text,
         'apos_inscricoes' => $faker->text
     ];
