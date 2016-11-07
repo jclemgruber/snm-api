@@ -69,3 +69,37 @@ $factory->define(App\Model\Tema::class, function ($faker) {
         'apos_inscricoes' => $faker->text
     ];
 });
+
+$factory->define(App\Model\EnderecoTipo::class, function ($faker) {
+    $faker = Faker::create('pt_BR');
+    return [
+        'nome' => $faker->word
+    ];
+});
+
+$factory->define(App\Model\Museu::class, function ($faker) {
+    $faker = Faker::create('pt_BR');
+    return [
+        'nome' => $faker->sentence,
+        'site' => $faker->url,
+        'email' => $faker->email,
+        'instituicao_tipo_id' => $faker->randomDigitNotNull,
+        'user_id' => $faker->numberBetween(1,20),
+        'fone1' => $faker->phoneNumber,
+        'fone2' => $faker->phoneNumber
+    ];
+});
+
+$factory->define(App\Model\MuseuEndereco::class, function ($faker) {
+    $faker = Faker::create('pt_BR');
+    return [
+        'endereco_tipo_id' => 1,
+        'cidade_id' => $faker->numberBetween(1,20),
+        'logradouro' => $faker->streetName,
+        'numero' => $faker->buildingNumber,
+        'cep' => $faker->postCode,
+        'bairro' => $faker->cityPrefix,
+        'latitude' => $faker->latitude,
+        'longitude' => $faker->longitude
+    ];
+});

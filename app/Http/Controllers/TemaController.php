@@ -40,10 +40,10 @@ class TemaController extends Controller
         return Validator::make($data, [
             'nome' => 'required',
             'ativo' => 'required|boolean',
-            'inicio_evento' => 'required|date_format:Y-m-d\TH:i:s.u\Z',
-            'fim_evento' => 'required|date_format:Y-m-d\TH:i:s.u\Z|after:inicio_evento',
-            'inicio_inscricoes' => 'required|date_format:Y-m-d\TH:i:s.u\Z',
-            'fim_inscricoes' => 'required|date_format:Y-m-d\TH:i:s.u\Z|after:inicio_inscricoes'
+            'inicio_evento' => 'required',
+            'fim_evento' => 'required|after:inicio_evento',
+            'inicio_inscricoes' => 'required',
+            'fim_inscricoes' => 'required|after:inicio_inscricoes'
         ]);
     }
 
@@ -103,7 +103,23 @@ class TemaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = $this->validator($request->all());
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        $tema = Tema::findOrFail($id);
+        $tema->nome = $request->nome;
+        $tema->ativo = $request->ativo;
+        $tema->inicio_evento = $request->inicio_evento;
+        $tema->fim_evento = $request->fim_evento;
+        $tema->inicio_inscricoes = $request->inicio_inscricoes;
+        $tema->fim_inscricoes = $request->fim_inscricoes;
+        $tema->antes_inscricoes = '';
+        $tema->apos_inscricoes = '';
+
+        $tema->save();
+        return $tema;
     }
 
     /**

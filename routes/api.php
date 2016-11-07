@@ -29,5 +29,7 @@ Route::group(['middleware' => 'cors'], function(){
 
         Route::resource('temas','TemaController');
 
+        Route::resource('museus','MuseuController');
+
     });
 });
