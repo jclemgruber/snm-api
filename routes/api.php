@@ -31,5 +31,7 @@ Route::group(['middleware' => 'cors'], function(){
 
         Route::resource('museus','MuseuController');
 
+        Route::get('/instituicao/tipos', 'InstituicaoTipoController@list');
+
     });
 });
