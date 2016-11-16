@@ -22,8 +22,13 @@ class CidadeController extends Controller
 
     public function list(Request $request)
     {
-        $cidades = Cidade::where('nome','like','%'.$request->nome.'%')
+        $limit = $request->input('limit', 5);
+        $cidades = Cidade::with(['Uf' => function($query){
+                                $query->select('id','nome','abrev');
+                        }])
+                        ->where('nome','like','%'.$request->q.'%')
                         ->orderBy('nome')
+                        ->limit($limit)
                         ->get();
 
         return $cidades->toArray();
