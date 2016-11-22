@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use JWTAuth;
+use DB;
+use App\Model\Museu;
+use App\Model\MuseuEndereco;
 
 class MuseuController extends Controller
 {
@@ -44,7 +48,38 @@ class MuseuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['Usuário não encontrado'], 404);
+        }
+
+        $validator = $this->validator($request->all());
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        DB::transaction(function ($request) use ($request, $user) {
+            $museu = Museu::create([
+                'nome'                  => $request->nome,
+                'instituicao_tipo_id'   => $request->instituicao_tipo_id,
+                'site'                  => $request->site,
+                'email'                 => $request->email,
+                'fone1'                 => $request->fone1,
+                'fone2'                 => $request->fone2,
+                'user_id'               => $user->id
+            ]);
+
+            $museuEnder = MuseuEndereco::create([
+                'museu_id'          => $museu->id,
+                'cep'               => $request->cep,
+                'cidade_id'         => $request->cidade_id,
+                'logradouro'        => $request->logradouro,
+                'numero'            => $request->numero,
+                'complemento'       => $request->complemento,
+                'bairro'            => $request->bairro
+            ]);
+        });
+
+        return 'Museu Cadastrado!';
     }
 
     /**
@@ -55,7 +90,9 @@ class MuseuController extends Controller
      */
     public function show($id)
     {
-        //
+        return Museu::with('Enderecos')
+                    ->with('Enderecos.cidade')
+                    ->findOrFail($id);
     }
 
     /**
@@ -78,7 +115,35 @@ class MuseuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['Usuário não encontrado'], 404);
+        }
+
+        $validator = $this->validator($request->all());
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        DB::transaction(function($request) use ($request, $id){
+            $museu = Museu::findOrFail($id);
+            $museu->nome                  = $request->nome;
+            $museu->instituicao_tipo_id   = $request->instituicao_tipo_id;
+            $museu->site                  = $request->site;
+            $museu->email                 = $request->email;
+            $museu->fone1                 = $request->fone1;
+            $museu->fone2                 = $request->fone2;
+
+            $museuEnd = $museu->enderecos()->first();
+            $museuEnd->cep               = $request->cep;
+            $museuEnd->cidade_id         = $request->cidade_id;
+            $museuEnd->logradouro        = $request->logradouro;
+            $museuEnd->numero            = $request->numero;
+            $museuEnd->complemento       = $request->complemento;
+            $museuEnd->bairro            = $request->bairro;
+
+            $museu->save();
+            $museuEnd->save();
+        });
     }
 
     /**
@@ -90,5 +155,20 @@ class MuseuController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'nome' => 'required',
+            'email' => 'required|email',
+            'fone1' => 'required',
+            'instituicao_tipo_id' => 'required',
+            'cep' => 'required',
+            'logradouro' => 'required',
+            'numero' => 'required',
+            'bairro' => 'required',
+            'cidade_id' => 'required|numeric'
+        ]);
     }
 }
