@@ -24,4 +24,9 @@ class Museu extends Model
     {
         return $this->hasMany('App\Model\MuseuEndereco');
     }
+
+    public function eventos()
+    {
+        return $this->hasMany('App\Model\Evento');
+    }
 }

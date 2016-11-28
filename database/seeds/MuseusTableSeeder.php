@@ -13,6 +13,7 @@ class MuseusTableSeeder extends Seeder
     {
         factory(App\Model\Museu::class, 30)->create()->each(function($museu){
             factory(App\Model\MuseuEndereco::class, 1)->create(['museu_id'=>$museu->id]);
+            factory(App\Model\Evento::class, 1)->create(['museu_id'=>$museu->id]);
         });
     }
 }

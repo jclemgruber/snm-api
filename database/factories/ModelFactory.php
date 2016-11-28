@@ -103,3 +103,26 @@ $factory->define(App\Model\MuseuEndereco::class, function ($faker) {
         'longitude' => $faker->longitude
     ];
 });
+
+$factory->define(App\Model\EventoTipo::class, function ($faker) {
+    $faker = Faker::create('pt_BR');
+    return [
+        'nome' => $faker->word
+    ];
+});
+
+$factory->define(App\Model\Evento::class, function ($faker) {
+    $faker = Faker::create('pt_BR');
+    return [
+        'nome' => $faker->sentence,
+        'museu_id' => $faker->numberBetween(1,20),
+        'evento_tipo_id' => $faker->numberBetween(1,5),
+        'inicio_evento' => $faker->date('Y-m-d'),
+        'fim_evento' => $faker->date('Y-m-d'),
+        'hora_inicio_evento' => $faker->time('H:i'),
+        'hora_fim_evento' => $faker->time('H:i'),
+        'local' => $faker->address,
+        'latitude' => $faker->latitude,
+        'longitude' => $faker->longitude
+    ];
+});

@@ -14,6 +14,11 @@ class Tema extends Model
 
     protected $dates = ['inicio_inscricoes', 'fim_inscricoes', 'inicio_evento', 'fim_evento'];
 
+    public function scopeAtivo($query)
+    {
+        return $query->where('ativo',1);
+    }
+
     public function getDateMask($value)
     {
         $mask = 'Y-m-d\TH:i:s.u\Z';
