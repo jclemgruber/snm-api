@@ -31,6 +31,7 @@ Route::group(['middleware' => 'cors'], function(){
 
         Route::resource('museus','MuseuController');
 
+        Route::get('/eventos/museu/{id}', 'EventoController@list');
         Route::resource('eventos','EventoController');
 
         Route::get('/instituicao/tipos',    'InstituicaoTipoController@list');

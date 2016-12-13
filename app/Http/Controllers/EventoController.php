@@ -23,9 +23,22 @@ class EventoController extends Controller
             return response()->json(['Usuário não encontrado'], 404);
         }
 
-        $eventos = $user->museus()->eventos();
+        return $user->museus()->with('eventos')->whereHas('eventos.tema', function($query) {
+            $query->where('ativo', 1);
+        })->get();
+    }
 
-        return $eventos;
+    public function list($id)
+    {
+        // Lista os museus registrados para o usuário autenticado
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['Usuário não encontrado'], 404);
+        }
+
+        return $user->museus()
+                    ->with('eventos')
+                    ->with('eventos.tipo')
+                    ->findOrFail($id);
     }
 
     /**

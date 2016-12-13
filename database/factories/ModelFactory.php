@@ -114,8 +114,9 @@ $factory->define(App\Model\EventoTipo::class, function ($faker) {
 $factory->define(App\Model\Evento::class, function ($faker) {
     $faker = Faker::create('pt_BR');
     return [
-        'nome' => $faker->sentence,
+        'descricao' => $faker->paragraph(),
         'museu_id' => $faker->numberBetween(1,20),
+        'tema_id' => $faker->numberBetween(1,5),
         'evento_tipo_id' => $faker->numberBetween(1,5),
         'inicio_evento' => $faker->date('Y-m-d'),
         'fim_evento' => $faker->date('Y-m-d'),
