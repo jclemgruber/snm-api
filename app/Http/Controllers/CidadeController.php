@@ -31,7 +31,14 @@ class CidadeController extends Controller
                         ->limit($limit)
                         ->get();
 
-        return $cidades->toArray();
+        $results = $cidades->map(function ($item, $key) {
+            return ['value'=>$item->nome,
+                    'label'=>$item->nome,
+                    'id'=>$item->id,
+                    'stamp'=>$item->uf->abrev];
+        });
+
+        return $results->toArray();
     }
 
     /**
