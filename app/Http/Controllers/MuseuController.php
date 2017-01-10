@@ -90,7 +90,12 @@ class MuseuController extends Controller
      */
     public function show($id)
     {
-        return Museu::with('Enderecos')
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['Usuário não encontrado'], 404);
+        }
+
+        return $user->museus()
+                    ->with('Enderecos')
                     ->with('Enderecos.cidade')
                     ->findOrFail($id);
     }
